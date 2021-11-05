@@ -1,0 +1,32 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Login</th>
+        <th scope="col">Password</th>
+        <th scope="col">Role</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users}}
+        <form target="_self" method="post" action="./user/{{this.id}}">
+            <tr>
+                <th scope="row">{{this.id}}</th>
+                <td><input type="text" name="username" value="{{this.username}}" /></td>
+                <td><input type="text" name="password" value="{{this.password}}" /></td>
+                <td>
+                    {{this.role}} =>
+                    <select name="role">
+                        {{#each ../roles}}
+                            <option value="{{this.value}}" >{{this.key}}</option>
+                        {{/each}}
+                    </select>
+                </td>
+                <td><input type="submit" /></td>
+            </tr>
+        </form>
+    {{/each}}
+
+    </tbody>
+</table>

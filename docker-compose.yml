@@ -5,8 +5,6 @@ services:
     image: docker.tyk.io/tyk-gateway/tyk-gateway:v3.2.1
     ports:
       - 8080:8080
-    networks:
-      - kafka
     volumes:
       - ./tyk-gateway-docker/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
       - ./tyk-gateway-docker/apps:/opt/tyk-gateway/apps
@@ -16,6 +14,8 @@ services:
       - TYK_GW_SECRET=foo
     depends_on:
       - ates_tyk-redis
+    networks:
+      - external
 
   ates_tyk-redis:
     image: redis:5.0-alpine
