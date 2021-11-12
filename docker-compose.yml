@@ -68,20 +68,21 @@ services:
     networks:
       - external
 
-#  ates_schema-registry:
-#    image: confluentinc/cp-schema-registry:6.2.1
-#    hostname: ates_schema-registry
-#    container_name: ates_schema-registry
-#    depends_on:
-#      - ates_broker
-#    ports:
-#      - "${KAFKA_SCHEMA_REGISTRY_PORT:-8081}:${KAFKA_SCHEMA_REGISTRY_PORT:-8081}"
-#    environment:
-#      SCHEMA_REGISTRY_HOST_NAME: ates_schema-registry
-#      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'ates_broker:${KAFKA_BROKER_PORT:-29092}'
-#      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:${KAFKA_SCHEMA_REGISTRY_PORT:-8081}
-#    networks:
-#      - external
+  ates_schema-registry:
+    image: confluentinc/cp-schema-registry:6.2.1
+    hostname: ates_schema-registry
+    container_name: ates_schema-registry
+    restart: always
+    depends_on:
+      - ates_broker
+    ports:
+      - "${KAFKA_SCHEMA_REGISTRY_PORT:-8081}:${KAFKA_SCHEMA_REGISTRY_PORT:-8081}"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: ates_schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'ates_broker:${KAFKA_BROKER_PORT:-29092}'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:${KAFKA_SCHEMA_REGISTRY_PORT:-8081}
+    networks:
+      - external
 
 #  ates_connect:
 #    image: cnfldemos/cp-server-connect-datagen:0.5.0-6.2.1

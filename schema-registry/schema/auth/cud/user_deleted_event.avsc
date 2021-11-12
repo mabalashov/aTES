@@ -1,0 +1,8 @@
+{
+    "type": "record",
+    "name": "user_deleted_event",
+    "namespace": "auth.cud",
+    "fields" : [
+        {"name": "id", "type": "int"}
+    ]
+}

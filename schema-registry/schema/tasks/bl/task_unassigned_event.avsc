@@ -1,0 +1,8 @@
+{
+    "type": "record",
+    "name": "task_unassigned_event",
+    "namespace": "tasks.bl",
+    "fields" : [
+        {"name": "id", "type": "int"}
+    ]
+}

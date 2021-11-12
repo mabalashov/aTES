@@ -6,10 +6,12 @@ import { HealthModule } from "./health/health.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import databaseConfig from "./config/database";
 import jwtConfig from "./config/jwt";
+import schemaRegistryConfig from "./config/schema_registry";
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { SchemaRegistryModule } from './schema-registry/schema-registry.module';
 
 const typeOrmFactory = async (
   configService: ConfigService,
@@ -21,8 +23,9 @@ const typeOrmFactory = async (
   imports: [
     TerminusModule,
     HealthModule,
+    SchemaRegistryModule.forRootAsync(),
     ConfigModule.forRoot({
-      load: [databaseConfig, jwtConfig],
+      load: [databaseConfig, jwtConfig, schemaRegistryConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,9 +33,11 @@ const typeOrmFactory = async (
       useFactory: typeOrmFactory,
     }),
     AuthModule,
-    UsersModule
+    UsersModule,
   ],
   controllers: [HealthController],
-  providers: [AppService],
+  providers: [
+    AppService,
+  ],
 })
 export class AppModule {}

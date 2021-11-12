@@ -33,12 +33,6 @@ export class AuthService {
   }
 
   async register(username: string, password: string): Promise<any> {
-    // await this.client.send({ cmd: 'sum' }, 'zxc');
-    // console.log('send');
-    // console.log(this.client);
-
-    // const res = await this.client.emit('say.hello', { ip: '127.0.0.1' });
-
     const existedUser = await this.usersService.findByUsername(username);
 
     if (existedUser) {
@@ -57,7 +51,11 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { sub: user.id, role: user.role, username: user.username };
+    const payload = {
+      sub: user.id,
+      role: user.role,
+      username: user.username,
+    };
     return await this.jwtService.signAsync(payload);
   }
 }

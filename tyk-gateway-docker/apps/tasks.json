@@ -1,0 +1,26 @@
+{
+  "name": "Task API",
+  "slug": "tasks",
+  "api_id": "1",
+  "org_id": "1",
+
+  "use_keyless": true,
+
+  "version_data": {
+    "not_versioned": true,
+    "versions": {
+      "Default": {
+        "name": "Default",
+        "use_extended_paths": true
+      }
+    }
+  },
+
+  "proxy": {
+    "listen_path": "/tasks/",
+    "target_url": "http://ates-task_service:3000/",
+    "strip_listen_path": false
+  },
+
+  "active": true
+}

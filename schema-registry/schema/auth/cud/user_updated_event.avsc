@@ -1,0 +1,10 @@
+{
+    "type": "record",
+    "name": "user_updated_event",
+    "namespace": "auth.cud",
+    "fields" : [
+        {"name": "id", "type": "int"},
+        {"name": "username", "type": "string"},
+        {"name": "role", "type": "string"}
+    ]
+}

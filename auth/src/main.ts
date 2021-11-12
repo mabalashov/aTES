@@ -17,8 +17,12 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['ates_kafka:9092'],
-      }
+        brokers: ['ates_broker:29092'],
+      },
+      consumer: {
+        groupId: 'auth-consumer',
+        allowAutoTopicCreation: true,
+      },
     }
   });
 
@@ -40,6 +44,7 @@ async function bootstrap() {
   app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }));
   app.setViewEngine('hbs');
 
+  await app.startAllMicroservices();
   await app.listen(3000);
 }
 bootstrap();

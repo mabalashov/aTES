@@ -1,0 +1,59 @@
+<h1>Tasks</h1>
+
+<form target="_self" method="post" action="./task">
+    <p>
+        <span>Description</span>
+        <input type="text" name="description" />
+    </p>
+
+    <p>
+        <input type="submit" value="Create" />
+    </p>
+</form>
+
+<form target="_self" method="post" action="./tasks-assign">
+    <p>
+        <input type="submit" value="Reassign Tasks" />
+    </p>
+</form>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Description</th>
+        <th scope="col">Is Ready</th>
+        <th scope="col">Is Finished</th>
+        <th scope="col">Assign Price</th>
+        <th scope="col">Complete Price</th>
+        <th scope="col">User</th>
+        <th scope="col">Finish</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each tasks}}
+        <tr>
+            <th scope="row">{{this.task.id}}</th>
+            <td>{{this.task.description}}</td>
+            <td>{{this.task.isReady}}</td>
+            <td>{{this.task.isFinished}}</td>
+            <td>{{this.task.assignPrice}}</td>
+            <td>{{this.task.completePrice}}</td>
+            <td>
+                {{#if this.task.user }}
+                    {{this.task.user.id}} / {{this.task.user.username}} [{{this.task.user.role}}]
+                {{/if}}
+            </td>
+            <td>
+                {{#if this.canClose}}
+                <form target="_self" method="post" action="./finish/{{this.task.id}}">
+                    <input type="submit" value="finish" />
+                </form>
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+
+    </tbody>
+</table>

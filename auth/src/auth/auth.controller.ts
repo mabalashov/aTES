@@ -45,6 +45,7 @@ export class AuthController {
     try {
       await this.userService.update(id, user);
     } catch (e) {
+      console.error(e);
       req.flash('error', e.response || 'Server Error');
     }
 
@@ -61,6 +62,7 @@ export class AuthController {
 
       return res.redirect('.');
     } catch (e) {
+      console.error(e);
       req.flash('error', e.response || 'Server Error');
 
       return res.redirect('./register');
@@ -91,6 +93,7 @@ export class AuthController {
 
       return res.redirect('.');
     } catch (e) {
+      console.error(e);
       req.flash('error', e.response || 'Server Error');
 
       return res.redirect('./login');
@@ -109,9 +112,10 @@ export class AuthController {
   @Get('logout')
   async logout(@Res() res, @Req() req: Request) {
     try {
-      res.cookie('x-auth-token', null);
+      res.cookie('x-auth-token', '');
 
     } catch (e) {
+      console.error(e);
       req.flash('error', e.response || 'Server Error');
     }
 

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  ates-auth_service:
+    image: node:14-alpine
+    command: sh -c "npm run start"
+    working_dir: /app
+    volumes:
+      - .:/app
+    networks:
+      - external
+
+networks:
+  external:
+    name: ates_network
+    external: true

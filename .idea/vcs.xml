@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/auth" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/task" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tyk-gateway-docker" vcs="Git" />
   </component>
 </project>

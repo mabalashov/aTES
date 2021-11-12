@@ -22,5 +22,5 @@ export class User {
     type: 'enum',
     enum: Role,
   })
-  role: string;
+  role: Role;
 }

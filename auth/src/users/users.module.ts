@@ -3,13 +3,17 @@ import { UsersService } from './users.service';
 import {User} from "./entities/user";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ClientsModule, Transport} from "@nestjs/microservices";
+import {FailedMessagesModule} from "../../../task/dist/failed-messages/failed-messages.module";
 
 @Module({
-  providers: [UsersService],
+  providers:
+    [
+      UsersService,
+    ],
   exports: [UsersService],
   imports: [
     TypeOrmModule.forFeature([User]),
-
+    FailedMessagesModule,
     ClientsModule.register([
       {
         name: 'USER_MODULE',
