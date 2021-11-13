@@ -20,16 +20,25 @@ export class TasksService {
   async createTask(dto: CreateTaskDto): Promise<Task> {
     const task = new Task();
 
-    task.description = dto.description;
+    [, task.jiraId, task.description] = /(\[.*])?(.*)/.exec(dto.description);
     task.isFinished = false;
     task.userId = null;
     task.isReady = false;
 
     const resp = await this.tasksRepository.save(task);
-    const schemaId = await this.schemaRegistry.getRegistryId('task_created_event', 1);
+    const schemaId = await this.schemaRegistry.getRegistryId('task_created_event', 2);
 
     await this.client.emit('task-created-event',
-      await this.schemaRegistry.encode(schemaId, { id: task.id }),
+      await this.schemaRegistry.encode(schemaId, {
+        id: task.id,
+        jiraId: task.jiraId,
+        description: task.description,
+        isReady: task.isReady,
+        isFinished: task.isFinished,
+        assignPrice: 0, // workaround. should be null
+        completePrice: 0,
+        userId: 0,
+      }),
     );
 
     return resp;
@@ -44,11 +53,15 @@ export class TasksService {
       await this.schemaRegistry.encode(schemaId, { id }),
     );
 
-    return this.tasksRepository.update(id, {
+    await this.tasksRepository.update(id, {
       assignPrice,
       completePrice,
       isReady: true,
     });
+
+    await this.dispatchUpdateEvent(
+      await this.tasksRepository.findOne(id),
+    );
   }
 
   async reassignTasks() {
@@ -96,6 +109,10 @@ export class TasksService {
       await this.schemaRegistry.encode(schemaId, { id: task.id }),
     );
 
+    await this.dispatchUpdateEvent(
+      await this.tasksRepository.findOne(task.id),
+    );
+
     return resp;
   }
 
@@ -122,8 +139,13 @@ export class TasksService {
     const resp = await this.tasksRepository.update(id, { isFinished: true });
 
     const schemaId = await this.schemaRegistry.getRegistryId('task_finished_event', 1);
+
     await this.client.emit<number>('task-finished-event',
       await this.schemaRegistry.encode(schemaId, { id }),
+    );
+
+    await this.dispatchUpdateEvent(
+      await this.tasksRepository.findOne(id),
     );
 
     return resp;
@@ -172,5 +194,22 @@ export class TasksService {
 
   async findById(id: number): Promise<Task | undefined> {
     return this.tasksRepository.findOne({ id });
+  }
+
+  async dispatchUpdateEvent(task: Task) {
+    const schemaId = await this.schemaRegistry.getRegistryId('task_updated_event', 1);
+
+    await this.client.emit('task-updated-event',
+      await this.schemaRegistry.encode(schemaId, {
+        id: task.id,
+        jiraId: task.jiraId,
+        description: task.description,
+        isReady: task.isReady,
+        isFinished: task.isFinished,
+        assignPrice: task.assignPrice || 0,
+        completePrice: task.completePrice || 0,
+        userId: task.userId || 0,
+      }),
+    );
   }
 }

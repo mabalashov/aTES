@@ -1,6 +1,7 @@
 import {
   SchemaRegistry,
   readAVSCAsync,
+  COMPATIBILITY,
 } from '@kafkajs/confluent-schema-registry';
 import * as path from "path";
 import * as fs from "fs";
@@ -13,16 +14,21 @@ const run = async () => {
   const dirs = [
     'auth/cud',
     'tasks/bl',
+    'tasks/cud',
   ];
 
   const results = [];
 
   for (const dir of dirs) {
-    for (const file of fs.readdirSync(path.join(__dirname, `schema/${dir}`))) {
-      const schema = await readAVSCAsync(path.join(__dirname, `schema/${dir}/${file}`));
-      const { id } = await registry.register(schema, { subject: file.split('.')[0] });
+    for (const subject of fs.readdirSync(path.join(__dirname, 'schema', dir))) {
+      for (const version of fs.readdirSync(path.join(__dirname, 'schema', dir, subject))) {
+        const filename = path.join(__dirname, 'schema', dir, subject, version);
+        console.log(`Processing ${filename}...`);
+        const content = await readAVSCAsync(filename);
+        const { id } = await registry.register(content, { subject, compatibility: COMPATIBILITY.NONE });
 
-      results.push(`${dir}/${file}: ${id}`);
+        results.push(`${dir}/${subject}/${version}: ${id}`);
+      }
     }
   }
 

@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "task_created_event",
+    "namespace": "tasks.cud",
+    "fields" : [
+        {"name": "id", "type": "int"},
+        {"name": "description", "type":  "string"},
+        {"name": "isReady", "type":  "boolean"},
+        {"name": "isFinished", "type":  "boolean"},
+        {"name": "assignPrice", "type":  "int"},
+        {"name": "completePrice", "type":  "int"},
+        {"name": "userId", "type":  "int"}
+    ]
+}

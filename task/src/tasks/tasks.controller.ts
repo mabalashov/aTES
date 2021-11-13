@@ -65,14 +65,16 @@ export class TasksController {
   async finishTask(
     @Res() res: Response,
     @Req() req: Request,
-    @Param('id') id: number,
+    @Param('id') id: string,
   ) {
-    const isOwner = await this.taskService.isOwner(req.user['id'], id);
+    const intId = parseInt(id);
+
+    const isOwner = await this.taskService.isOwner(req.user['id'], intId);
     if (!isOwner) {
       throw new UnauthorizedException();
     }
 
-    await this.taskService.finishTask(id);
+    await this.taskService.finishTask(intId);
 
     return res.redirect('..');
   }

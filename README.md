@@ -14,12 +14,17 @@ docker-compose up -d
 cd ..
 ```
 
+Default URL's:
+
+- [Auth](http://127.0.0.1:8080/auth/)
+- [Tasks](http://127.0.0.1:8080/tasks/)
+- [Accounting](http://127.0.0.1:8080/accounting/)
+- [Analytics](http://127.0.0.1:8080/analitics/)
+
 Planning
 ---
 
-Event Storming and application plan could be found here:
-
-https://drive.google.com/file/d/1_xHboZXMoX8mRH-3gPrQ6qGd080JB5Nr/view?usp=sharing
+Event Storming and application plan could be found [here](https://drive.google.com/file/d/1_xHboZXMoX8mRH-3gPrQ6qGd080JB5Nr/view?usp=sharing). Please open in diagrams.io app to find other pages
 
 Cutting Edges
 ---
@@ -27,12 +32,13 @@ Cutting Edges
 The following workarounds were implemented in this app.
 The main aim of this app is practicing with microservice architecture, not demonstrating of clear code
 
-There are too much duplicate code!
-
+- There are too much duplicate code!
 - .env files with all sensitive information are committed in git
 - jwt uses secret instead of keys
 - some configuration is hardcoded in the code
-- tyk is not used for jwt validation: jwt is parsing in each service
+- tyk is not used for jwt validation: jwt is parsing in each service. As an option we can use the [TYK JWT flow](https://blog.kloia.com/using-tyk-io-and-jwt-io-on-stateless-microservice-authentication-d7e6985b97bd)
+  or [Traefik JWT auth](https://doc.traefik.io/traefik-enterprise/middlewares/jwt/) which is not storing the produced JWT token.
+  We can configure Traefik to [invalidate](https://doc.traefik.io/traefik/middlewares/http/forwardauth/) each request with our jwt service if needed
 - NestJS's default library doesn't allow adding headers to Kafka's event. So, I made a separate topic for each event
 Looks like it is a restriction of [built in library](https://docs.nestjs.com/microservices/basics#publishing-events) 
 - It will be better to use [Transaction Outbox](https://microservices.io/patterns/data/transactional-outbox.html) pattern 
@@ -69,6 +75,4 @@ Auth
 
 The JWT tokens are using in this app for AuthN.
 This approach has its own pros and cons in comparison with OAuth, but it was chosen due to it is simpler to implement
-
-
 

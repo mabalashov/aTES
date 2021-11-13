@@ -1,0 +1,15 @@
+{
+    "type": "record",
+    "name": "task_updated_event",
+    "namespace": "tasks.cud",
+    "fields" : [
+        {"name": "id", "type": "int"},
+        {"name": "jiraId", "type": ["null", "string"], "default": null},
+        {"name": "description", "type":  "string"},
+        {"name": "isReady", "type":  "boolean"},
+        {"name": "isFinished", "type":  "boolean"},
+        {"name": "assignPrice", "type": ["null", "int"] },
+        {"name": "completePrice", "type": ["null", "int"] },
+        {"name": "userId", "type": ["null", "int"] }
+    ]
+}

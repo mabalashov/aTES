@@ -81,6 +81,16 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: ates_schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'ates_broker:${KAFKA_BROKER_PORT:-29092}'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:${KAFKA_SCHEMA_REGISTRY_PORT:-8081}
+      SCHEMA_COMPABILITY_LEVEL: none
+    networks:
+      - external
+
+  ates_schema-registry_migration:
+    image: node:14-alpine
+    command: sh -c "npm run start"
+    working_dir: /app
+    volumes:
+      - ./schema-registry:/app
     networks:
       - external
 

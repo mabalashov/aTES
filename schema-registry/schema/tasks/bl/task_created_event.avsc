@@ -1,8 +1,0 @@
-{
-    "type": "record",
-    "name": "task_created_event",
-    "namespace": "tasks.bl",
-    "fields" : [
-        {"name": "id", "type": "int"}
-    ]
-}

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  ates-accounting_service:
+    image: node:14-alpine
+    restart: always
+    ports:
+      - ${SERVICE_FORWARD_PORT:-1200}:3000
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "npm run start:dev"
+    networks:
+      - internal
+      - external
+    depends_on:
+      - ates-accounting_database
+
+  ates-accounting_database:
+    image: postgres:13
+    ports:
+      - '${DB_FORWARD_PORT:-5432}:${DB_PORT:-5432}'
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+    #    volumes:
+    #        - './docker/local/postgres/data:/var/lib/postgresql/data'
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+    networks:
+      - internal
+      - external
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+
+networks:
+  internal:
+    driver: bridge
+
+  external:
+    name: ates_network
+    external: true

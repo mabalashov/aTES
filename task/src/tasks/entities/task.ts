@@ -1,10 +1,18 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "../../users/entities/user";
 
+/**
+ * I have no specific statuses for assigned and finished tasks
+ * Instead of this I use isFinished flag and userId relation
+ * So, the task to change the status names from HW #3 is not relevant in my case
+ */
 @Entity({ name: 'tasks' })
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ nullable: true })
+  jiraId: string;
 
   @Column()
   description: string;

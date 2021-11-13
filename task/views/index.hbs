@@ -22,6 +22,7 @@
     <thead>
     <tr>
         <th scope="col">#</th>
+        <th scope="col">Jira Id</th>
         <th scope="col">Description</th>
         <th scope="col">Is Ready</th>
         <th scope="col">Is Finished</th>
@@ -35,6 +36,7 @@
     {{#each tasks}}
         <tr>
             <th scope="row">{{this.task.id}}</th>
+            <td>{{this.task.jiraId}}</td>
             <td>{{this.task.description}}</td>
             <td>{{this.task.isReady}}</td>
             <td>{{this.task.isFinished}}</td>
